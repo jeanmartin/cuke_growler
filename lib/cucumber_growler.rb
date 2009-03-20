@@ -1,46 +1,48 @@
-require 'cucumber/formatters/pretty_formatter'
+require 'cucumber/formatter/console'
 
 module CucumberGrowler
   IMAGE_ROOT = File.dirname(__FILE__) + '/../images'
   
   def self.included(base)    
-    base.class_eval do
-      alias original_dump dump
-      include InstanceMethods
+    base.module_eval do
+      alias original_print_counts print_counts
 
-      def dump
-        original_dump
-        if @failed.length > 0
-          gwl_fail "#{@failed.length} steps failed"
-        elsif @pending_steps.length > 0
-          gwl_pending "#{@pending_steps.length} steps pending, #{@passed.length} passed"
-        else 
-          gwl_pass "#{@passed.length} steps passed"
-        end 
+      def print_counts
+        status_string, img, messages = '', '', []
+        [:failed, :skipped, :undefined, :pending, :passed].reverse.each do |status|
+          if step_mother.steps(status).any?
+            status_string, img = status_img_for(status)
+            messages << dump_count(step_mother.steps(status).length, "step", status.to_s)
+          end
+        end
+        growl status_string, messages.reverse.join(' - '), "#{IMAGE_ROOT}/#{img}.png"
+        original_print_counts
+      end
+      
+      def status_img_for(status)
+        case status
+        when :passed
+          ['Everything passed!','pass']
+        when :pending
+          ['Still pending features...','pending']
+        when :undefined
+          ['Something undefined happened...','pending']
+        when :skipped
+          ['Some steps skipped...','pending']
+        when :failed
+          ['Failures occurred!','fail']
+        end
+      end
+      
+      def growl(title, msg, img, pri=0, sticky="")
+        system "growlnotify -n 'autotest' --image #{img} -p #{pri} -d '#{title}_#{Time.now.to_s}' -w -m '#{msg}' #{title}"
       end
       
     end    
   end
-  
-  module InstanceMethods
-    def growl(title, msg, img, pri=0, sticky="")
-      system "growlnotify -n 'Cucumber features' --image #{img} -p #{pri} -d '#{Time.now.to_s}' -w -m '#{msg}' #{title}"
-    end
 
-    def gwl_fail(message)
-      growl("FAIL", message, "#{IMAGE_ROOT}/fail.png")
-    end
-
-    def gwl_pending(message)
-      growl("PENDING", message, "#{IMAGE_ROOT}/pending.png")
-    end
-
-    def gwl_pass(message)
-      growl("PASS", message, "#{IMAGE_ROOT}/pass.png")
-    end       
-  end 
 end
 
-class Cucumber::Formatters::PrettyFormatter
+module Cucumber::Formatter::Console
   include CucumberGrowler
 end
