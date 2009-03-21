@@ -24,9 +24,9 @@ module CucumberGrowler
         when :passed
           ['Everything passed!','pass']
         when :pending
-          ['Still pending features...','pending']
+          ['Some steps are pending...','pending']
         when :undefined
-          ['Something undefined happened...','pending']
+          ['Some undefined steps...','pending']
         when :skipped
           ['Some steps skipped...','pending']
         when :failed
