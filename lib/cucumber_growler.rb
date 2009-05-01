@@ -1,3 +1,4 @@
+require 'cucumber'
 require 'cucumber/formatter/console'
 
 module CucumberGrowler
