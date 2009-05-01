@@ -21,4 +21,11 @@ Customization
 
 You can customize the pass, failed, and pending images. Yuo'll find them in cucumber_growler/images
 
-Copyright (c) 2008 paolo.dona@gmail.com (http://paolodona.com), released under the MIT license
+Contributors
+============
+
+Original idea by paolo.dona@gmail.com (paolodona) (2008)
+Complete rewrite by Jan Schwenzien (jeanmartin) (2009)
+Fix by Christian Mayer (mifix) (2009)
+
+Released under the MIT license
