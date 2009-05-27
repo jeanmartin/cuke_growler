@@ -6,9 +6,9 @@ module CucumberGrowler
   
   def self.included(base)    
     base.module_eval do
-      alias original_print_counts print_counts
+      alias original_print_stats print_stats
 
-      def print_counts
+      def print_stats(features)
         status_string, img, messages = '', '', []
         [:failed, :skipped, :undefined, :pending, :passed].reverse.each do |status|
           if step_mother.steps(status).any?
@@ -17,7 +17,7 @@ module CucumberGrowler
           end
         end
         growl status_string, messages.reverse.join(' - '), "#{IMAGE_ROOT}/#{img}.png"
-        original_print_counts
+        original_print_stats(features)
       end
       
       def status_img_for(status)

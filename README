@@ -19,7 +19,7 @@ When cucumber ends its execution you'll see a nice notification on your screen.
 Customization
 =============
 
-You can customize the pass, failed, and pending images. Yuo'll find them in cucumber_growler/images
+You can customize the pass, failed, and pending images. You'll find them in cucumber_growler/images
 
 Contributors
 ============
