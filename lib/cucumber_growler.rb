@@ -2,7 +2,7 @@ require 'cucumber'
 require 'cucumber/formatter/console'
 
 module CucumberGrowler
-  IMAGE_ROOT = '~/.autotest_images'
+  IMAGE_ROOT = File.dirname(__FILE__) + '/../images'
   
   def self.included(base)    
     base.module_eval do
