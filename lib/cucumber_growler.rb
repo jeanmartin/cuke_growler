@@ -2,7 +2,7 @@ require 'cucumber'
 require 'cucumber/formatter/console'
 
 module CucumberGrowler
-  IMAGE_ROOT = File.dirname(__FILE__) + '/../images'
+  IMAGE_ROOT = '~/.autotest_images'
   
   def self.included(base)    
     base.module_eval do
@@ -23,7 +23,7 @@ module CucumberGrowler
       def status_img_for(status)
         case status
         when :passed
-          ['Everything passed!','pass']
+          ['Features passed!','pass']
         when :pending
           ['Some steps are pending...','pending']
         when :undefined
